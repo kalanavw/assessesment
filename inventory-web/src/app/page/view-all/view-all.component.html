@@ -1,0 +1,62 @@
+<div class="grid-container">
+  <mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile *ngFor="let product of products">
+      <mat-card class="dashboard-card">
+        <mat-card-content>
+          <table width="100%">
+            <tr>
+              <td width="50%">
+                <img [src]="product.imageUrl" alt="" style=" height: 180px;">
+              </td>
+              <td width="50%">
+                <p>Product : {{product.productName}}</p>
+                <p>Carton Size : {{product.unitsPerCarton}}</p>
+                <h3 style="font-size: large">Calculate Price</h3>
+
+                <form [formGroup]="calForm">
+                  <table width="100%">
+                    <tr>
+                      <td width="40%">Type</td>
+                      <td>
+                        <mat-form-field appearance="legacy">
+                          <mat-label>Select Type</mat-label>
+                          <mat-select formControlName="type">
+                            <mat-option value="Single">Single Unit(s)</mat-option>
+                            <mat-option value="Carton">Carton(s)</mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="calForm.controls['qty'].hasError('required')">
+                            Invalid Quantity Type for {{product.productName}}
+                          </mat-error>
+                        </mat-form-field>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Quantity</td>
+                      <td>
+                        <mat-form-field appearance="legacy">
+                          <mat-label>Quantity</mat-label>
+                          <input matInput placeholder="Quantity" type="number" min="1" formControlName="qty">
+                          <mat-error *ngIf="calForm.controls['qty'].hasError('required')">
+                            Invalid Quantity for {{product.productName}}
+                          </mat-error>
+                        </mat-form-field>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      </td>
+                      <td>
+                        <button mat-raised-button color="primary" type="submit" (click)="calculatePrice(product.id)">Calculate</button>
+                      </td>
+                    </tr>
+                  </table>
+                </form>
+              </td>
+            </tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <h3 style="font-size: 50px; margin-left: 550px;padding-top: 30px">Total Price:  {{totalPrice |  number : '1.2-2'}}</h3>
+</div>
